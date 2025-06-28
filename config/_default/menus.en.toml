@@ -3,7 +3,7 @@ none = "none"
 
 [[main]]
 name = "About me"
-pageRef = "about-me"
+pageRef = "about"
 identifier = "REQapv1J49"
 weight = 9_999
 
