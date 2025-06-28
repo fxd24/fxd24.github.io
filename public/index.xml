@@ -18,7 +18,7 @@
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
       <guid>http://localhost:53427/posts/mlflow/</guid>
       <description></description>
-      
+      <media:content xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:53427/posts/mlflow/featured.png" />
     </item>
     
     <item>
