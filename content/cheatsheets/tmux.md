@@ -4,7 +4,9 @@ date: 2025-07-03
 draft: false
 tags: ["tmux", "cheat sheet", "ml training", "data processing"]
 categories: ["cheat sheets", "mlops", "data engineering"]
-description: "A comprehensive guide to using tmux for managing long-running ML training jobs, data
+description: "A comprehensive guide to using tmux for managing long-running ML training jobs, data"
+summary: "Learn how to use tmux to keep your ML training jobs alive, manage multiple processes, and monitor them effectively."
+featureimage: "https://upload.wikimedia.org/wikipedia/commons/5/50/Tmux.png"
 ---
 # Tmux Cheat Sheet: Never Lose Your Training Jobs Again
 
@@ -363,6 +365,8 @@ set -g status-right-length 50
 - **GPU memory**: Detached sessions hold GPU memory - clean up unused sessions
 - **macOS clipboard**: Without proper config, copy/paste between tmux and macOS clipboard won't work
 - **No automatic logging**: Tmux doesn't log output by default - you must set it up manually
+
+Feel free to contact me or create an issue if there is any mistake. I love to improve this cheat sheet and make it more useful for everyone.
 
 ---
 

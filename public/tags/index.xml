@@ -22,6 +22,26 @@
     </item>
     
     <item>
+      <title>Cheat Sheet</title>
+      <link>http://localhost:1313/tags/cheat-sheet/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/cheat-sheet/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Data Processing</title>
+      <link>http://localhost:1313/tags/data-processing/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/data-processing/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
       <title>Github-Pages</title>
       <link>http://localhost:1313/tags/github-pages/</link>
       <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
@@ -42,11 +62,31 @@
     </item>
     
     <item>
+      <title>Ml Training</title>
+      <link>http://localhost:1313/tags/ml-training/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/ml-training/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
       <title>Static-Site</title>
       <link>http://localhost:1313/tags/static-site/</link>
       <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
       <guid>http://localhost:1313/tags/static-site/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Tmux</title>
+      <link>http://localhost:1313/tags/tmux/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/tmux/</guid>
       <description></description>
       
     </item>
@@ -62,21 +102,21 @@
     </item>
     
     <item>
-      <title>CheatSheet</title>
-      <link>http://localhost:1313/tags/cheatsheet/</link>
-      <pubDate>Sat, 28 Jun 2025 00:00:00 +0000</pubDate>
+      <title>Experiment Tracking</title>
+      <link>http://localhost:1313/tags/experiment-tracking/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
-      <guid>http://localhost:1313/tags/cheatsheet/</guid>
+      <guid>http://localhost:1313/tags/experiment-tracking/</guid>
       <description></description>
       
     </item>
     
     <item>
-      <title>ML</title>
-      <link>http://localhost:1313/tags/ml/</link>
-      <pubDate>Sat, 28 Jun 2025 00:00:00 +0000</pubDate>
+      <title>Machine-Learning</title>
+      <link>http://localhost:1313/tags/machine-learning/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
-      <guid>http://localhost:1313/tags/ml/</guid>
+      <guid>http://localhost:1313/tags/machine-learning/</guid>
       <description></description>
       
     </item>
@@ -84,9 +124,59 @@
     <item>
       <title>MLFlow</title>
       <link>http://localhost:1313/tags/mlflow/</link>
-      <pubDate>Sat, 28 Jun 2025 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
       <guid>http://localhost:1313/tags/mlflow/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>http://localhost:1313/tags/python/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/python/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>CheatSheet</title>
+      <link>http://localhost:1313/tags/cheatsheet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/cheatsheet/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Data Engineering</title>
+      <link>http://localhost:1313/tags/data-engineering/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/data-engineering/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>ML</title>
+      <link>http://localhost:1313/tags/ml/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/ml/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Mlops</title>
+      <link>http://localhost:1313/tags/mlops/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/tags/mlops/</guid>
       <description></description>
       
     </item>

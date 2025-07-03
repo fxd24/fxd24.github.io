@@ -13,3 +13,13 @@ kbd {
     padding: 0.1em 0.6em;
     text-shadow: 0 1px 0 #fff;
 }
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    kbd {
+        background-color: #404040;
+        border-color: #666;
+        color: #fff;
+        text-shadow: 0 1px 0 #000;
+    }
+}

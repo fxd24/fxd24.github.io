@@ -3,6 +3,7 @@ title: "From Zero to Live: Publishing Your Hugo Website with Blowfish and GitHub
 date: 2025-07-03
 draft: false
 featureimage: "https://upload.wikimedia.org/wikipedia/commons/a/af/Logo_of_Hugo_the_static_website_generator.svg"
+summary: "A step-by-step guide to building and deploying a Hugo website using the Blowfish theme and GitHub Pages, including custom domain setup."
 heroStyle: "big"
 tags: ["hugo", "blowfish", "github-pages", "web-development", "static-site"]
 categories: ["tutorials", "web-development"]

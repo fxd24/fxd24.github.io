@@ -12,6 +12,36 @@
     <lastBuildDate>Thu, 03 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Cheat Sheets</title>
+      <link>http://localhost:1313/categories/cheat-sheets/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/cheat-sheets/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Data Engineering</title>
+      <link>http://localhost:1313/categories/data-engineering/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/data-engineering/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Mlops</title>
+      <link>http://localhost:1313/categories/mlops/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/mlops/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
       <title>Tutorials</title>
       <link>http://localhost:1313/categories/tutorials/</link>
       <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
@@ -27,6 +57,16 @@
       <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
       <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
       <guid>http://localhost:1313/categories/web-development/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Data Science</title>
+      <link>http://localhost:1313/categories/data-science/</link>
+      <pubDate>Wed, 15 Jan 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/data-science/</guid>
       <description></description>
       
     </item>
