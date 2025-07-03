@@ -1,7 +1,7 @@
 ---
 title: Tmux Cheat Sheet
 date: 2025-07-03
-draft: true
+draft: false
 tags: ["tmux", "cheat sheet", "ml training", "data processing"]
 categories: ["cheat sheets", "mlops", "data engineering"]
 description: "A comprehensive guide to using tmux for managing long-running ML training jobs, data
@@ -9,6 +9,25 @@ description: "A comprehensive guide to using tmux for managing long-running ML t
 # Tmux Cheat Sheet: Never Lose Your Training Jobs Again
 
 Running ML training jobs, data processing pipelines, or any long-running process on remote servers comes with familiar pain points: SSH connections drop, you need to grab coffee during a 6-hour training run, or you simply want to start multiple experiments and monitor them independently. Enter tmux - the terminal multiplexer that keeps your processes alive and your sanity intact.
+
+Next you will find the quick cheat sheet with the essential commands, followed by a detailed explanation of how to use tmux effectively for ML and data workflows.
+
+## Quick Cheat Sheet
+
+| Action | Command |
+|--------|---------|
+| New session | `tmux new -s name` |
+| Attach session | `tmux a -t name` |
+| List sessions | `tmux ls` |
+| Detach | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>d</kbd> |
+| New window | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>c</kbd> |
+| Split vertical | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>%</kbd> |
+| Split horizontal | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>"</kbd> |
+| Navigate panes | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> |
+| Zoom pane | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>z</kbd> |
+| Copy mode | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>[</kbd> |
+| Paste | <kbd>Ctrl</kbd>+<kbd>b</kbd> <kbd>]</kbd> |
+| Kill session | `tmux kill-session -t name` |
 
 ## Why Tmux for ML/Data Work?
 
@@ -324,23 +343,6 @@ set -g status-right '#[fg=yellow]#(uptime | cut -d "," -f 1) #[fg=white]| #[fg=c
 set -g status-left-length 20
 set -g status-right-length 50
 ```
-
-## Quick Reference Card
-
-| Action | Command |
-|--------|---------|
-| New session | `tmux new -s name` |
-| Attach session | `tmux a -t name` |
-| List sessions | `tmux ls` |
-| Detach | `Ctrl+b d` |
-| New window | `Ctrl+b c` |
-| Split vertical | `Ctrl+b %` |
-| Split horizontal | `Ctrl+b "` |
-| Navigate panes | `Ctrl+b arrow` |
-| Zoom pane | `Ctrl+b z` |
-| Copy mode | `Ctrl+b [` |
-| Paste | `Ctrl+b ]` |
-| Kill session | `tmux kill-session -t name` |
 
 ## Pro Tips
 
