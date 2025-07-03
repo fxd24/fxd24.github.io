@@ -2,14 +2,34 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on David&#39;s Universe</title>
-    <link>http://localhost:53427/categories/</link>
+    <link>http://localhost:1313/categories/</link>
     <description>Recent content in Categories on David&#39;s Universe</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <managingEditor>dioxide.harrows_1h@icloud.com (David Graf)</managingEditor>
     <webMaster>dioxide.harrows_1h@icloud.com (David Graf)</webMaster>
     <copyright>© 2025 David Graf</copyright>
-    <atom:link href="http://localhost:53427/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 03 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Tutorials</title>
+      <link>http://localhost:1313/categories/tutorials/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/tutorials/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>Web-Development</title>
+      <link>http://localhost:1313/categories/web-development/</link>
+      <pubDate>Thu, 03 Jul 2025 00:00:00 +0000</pubDate>
+      <author>dioxide.harrows_1h@icloud.com (David Graf)</author>
+      <guid>http://localhost:1313/categories/web-development/</guid>
+      <description></description>
+      
+    </item>
     
   </channel>
 </rss>

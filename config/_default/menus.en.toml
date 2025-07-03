@@ -2,10 +2,30 @@
 none = "none"
 
 [[main]]
+name = "Home"
+pageRef = "index"
+identifier = "REQapv1J48"
+weight = 1_000
+
+
+[[main]]
 name = "About me"
 pageRef = "about"
 identifier = "REQapv1J49"
-weight = 9_999
+weight = 2_000
+
+[[main]]
+name = "Posts"
+pageRef = "posts"
+identifier = "REQapv1J50"
+weight = 3_000
+
+[[main]]
+name = "Cheat Sheets"
+pageRef = "cheatsheets"
+identifier = "REQapv1J51"
+weight = 4_000
+
 
 [[footer]]
 none = "none"
