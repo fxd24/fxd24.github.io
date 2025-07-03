@@ -9,8 +9,6 @@ tags: ["hugo", "blowfish", "github-pages", "web-development", "static-site"]
 categories: ["tutorials", "web-development"]
 ---
 
-# From Zero to Live: Publishing Your Hugo Website with Blowfish and GitHub Pages
-
 Building and deploying a modern static website doesn't have to be complicated. In this comprehensive guide, I'll walk you through the entire process of creating a Hugo website using the Blowfish theme and publishing it to GitHub Pages with a custom domain. This is exactly the setup I used for my own website, including the gotchas and solutions I discovered along the way.
 
 ## Introduction

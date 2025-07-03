@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>MLFlow on David&#39;s Universe</title>
+    <title>Mlflow on David&#39;s Universe</title>
     <link>http://localhost:1313/tags/mlflow/</link>
-    <description>Recent content in MLFlow on David&#39;s Universe</description>
+    <description>Recent content in Mlflow on David&#39;s Universe</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <managingEditor>dioxide.harrows_1h@icloud.com (David Graf)</managingEditor>
