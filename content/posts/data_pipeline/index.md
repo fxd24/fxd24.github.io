@@ -2,7 +2,8 @@
 title: "Design Patterns for quickly building Reliable Data Pipelines with AI"
 date: 2025-08-14
 tags: ["data-pipeline", "python", "pydantic", "adapters", "repository", "apscheduler"]
-description: "A small set of patterns—data contracts, adapters/fetchers, repositories—lets you grow from a single script to a reliable, testable pipeline with minimal rewrites."
+categories: ["Data", "Data Engineering"]
+summary: "A small set of patterns—data contracts, adapters/fetchers, repositories—lets you grow from a single script to a reliable, testable pipeline with minimal rewrites."
 draft: false
 ---
 
