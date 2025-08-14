@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "Design Patterns for quickly building Reliable Data Pipelines with AI"
 date: 2025-08-14
@@ -6,30 +5,31 @@ tags: ["data-pipeline", "python", "pydantic", "adapters", "repository", "apsched
 description: "A small set of patterns—data contracts, adapters/fetchers, repositories—lets you grow from a single script to a reliable, testable pipeline with minimal rewrites."
 draft: false
 ---
-```
 
-TODO I have found myself recently in the situation where I had to build quickly a data pipeline to ingest various types of news data, going from it news to status pages. I had no idea about how the data sources were structured. Usually I would start with one source, try to learn how to poll data from it, then add more sources and continue like that. I'd focus later on the code quality and architecture. 
-The process of learning the data soruces and how to poll data is very important and time consuming, but in the end it was not what the value was. 
-The goal was to build a pipeline that brings together many data sources, aggregates them and then filters and ranks them.
-So I've been thinking more and more about the software engineer taking the architect role and the AI writing the code.
-Why not architect first, then let AI fill in the code but still guardrailing it to generate just what you are looking for and not too much more?
-I've used also AI to assist me in taking the design decisions a reflect on various options. 
-Here is what I came up with.
+If you’ve ever rushed a prototype and then drowned in refactors, this post is for you. I recently had to ingest a variety of IT news sources—status pages, advisories, product blogs—without prior knowledge of their data shapes. Instead of spelunking each source by hand, I took the architect’s seat and let AI write most of the glue code. A few hours later, I had a reliable, extensible pipeline.
 
-# TODO GOAL: this post is going to be useful for you if you are interested in understanding how simple design patterns can help you build an extensible, less duplicate code, easy to substitute data pipeline. 
+What you’ll learn here:
 
-# TODO for the sake of this article I will the example of fetching various IT news sources as in the [Newsfeed Platform](https://github.com/fxd24/newsfeed_platform) project I have been working on, but the architectural decisions are generally applicable.
+- How to design a small set of seams that keeps your pipeline clean as it grows
+- How to use AI as a code accelerator while you stay in charge of the big picture
+- Practical patterns: contract-first model, fetcher/adapter split, repository abstraction, config-driven sources, and scheduler choices
+- A repeatable workflow to add a new source fast
+
+I’ll use my `Newsfeed Platform` project as the running example, but the structure applies broadly.
 
 ## Why small pipelines get messy fast
 
 Fetching multiple sources (JSON APIs, RSS, custom endpoints) often starts as glue scripts. Then reality hits:
+
 - Adding a new source touches too much code
 - Data shapes differ wildly
 - Storage changes are painful
 - Scheduling/observability are afterthoughts
-TODO This leads to a lot of duplicate code and a lot of time at refactoring.
+
+That’s how duplication creeps in and why “just one more source” becomes a slog. The fix is to commit to a few strong seams up front.
 
 This post shows a compact architecture that stays flexible as you add sources or swap storage:
+
 - A contract-first Pydantic model to standardize data
 - Clear separation between transport (fetchers) and transformation (adapters)
 - A repository interface so storage is swappable (start in-memory, go persistent later)
@@ -37,9 +37,20 @@ This post shows a compact architecture that stays flexible as you add sources or
 
 Code and structure are based on my project [Newsfeed Platform](https://github.com/fxd24/newsfeed_platform).
 
+## Engineer-as-Architect, AI-as-Copilot
+
+AI is excellent at writing code once you define the boundaries. It’s still weak at holding the whole system in its head and making trade-offs—that’s our job. My flow:
+
+- Clarify the big picture: contracts, seams, idempotency, failure modes
+- Ask AI to propose options; decide as an engineer
+- Let AI generate focused code that snaps into the architecture (fetchers, adapters, tests)
+
+Tools I used: thought partnership with Claude Desktop App and Gemini; code generation and refactors mainly in Cursor. I’ll try Claude Code next.
+
 ## The Data Model: one Pydantic model
 
-# TODO we assume that the various source have a similar structure and will be mapped to the same model. This can be extended and adapted to your liking, but is out of scope for this article.
+Your sources won’t agree on fields. Your system should. Define one canonical contract and make everything conform to it. In this project, that’s `NewsEvent`.
+
 Your pipeline needs a single language. Here that’s `NewsEvent` in `src/models/domain.py`. Everything coming in is shaped into this model; everything stored or served flows through it.
 
 ```python
@@ -63,6 +74,7 @@ class NewsEvent(BaseModel):
 ```
 TODO make this below a bit more conversational
 Why this helps:
+
 - Validation at the boundary avoids corrupt data
 - Named fields make tests and mapping explicit
 - Enables consistent storage and API payloads
@@ -93,11 +105,9 @@ Concrete implementations are small and focused:
 - Fetchers: `src/sources/fetchers.py` (`JSONAPIFetcher`, `RSSFetcher`, `HackerNewsFetcher`)
 - Adapters: `src/sources/adapters.py` (`GitHubStatusAdapter`, `RSSAdapter`, etc.)
 
-
-
-
 ## Repositories: start in-memory, swap later
-TODO explain what is a repository, what is the advantage. explain how it makes simple to go from in-memory to persistent storage.
+
+A repository abstracts storage behind a tiny interface. Start with in-memory for speed; swap to a persistent implementation without touching ingestion code. This keeps early iteration fast and later migrations boring. TODO a reader does not know what in-memory is, explain it.
 
 The repository interface in `src/repositories/news_event_repository.py` lets you switch storage without touching ingestion code.
 
@@ -150,13 +160,14 @@ else:
 ```
 
 Why this pays off:
+
 - Faster feedback loops early on
 - Idempotency at the repo boundary reduces duplication bugs
 - Storage migrations become configuration changes
 
 ## Config-driven sources
 
-Avoid hardcoding sources. Put them in YAML and load at startup (`config/sources.yaml`, `src/config/config_manager.py`):
+Avoid hardcoding sources. Put them in YAML and load at startup (`config/sources.yaml`):
 
 ```yaml
 # config/sources.yaml (excerpt)
@@ -193,10 +204,8 @@ TODO make this more conversational. explain what is going to be discussed and wh
   - You need dynamic, in-app scheduling
   - You want controlled concurrency and misfire handling
   - You prefer app-integrated logs/metrics and easier testing
-
-TODO explain concretely why we chose APScheduler and not cron. use the example of the project to explain.
-
-
+  
+For this project I chose APScheduler to keep polling logic, retries, and job coordination inside the app. It makes local testing trivial and avoids the operational dance of updating cron across environments.
 
 ## Putting it together
 
@@ -214,7 +223,8 @@ flowchart LR
 ```
 
 ## Testing strategy (brief)
-TODO explain how the separation of concerns make testing way easier and therefore makes the pipeline much more reliable.
+
+Because responsibilities are cleanly split, tests are straightforward and reliable:
 
 - Adapters: pure transformation tests (input payload → `NewsEvent` list)
 - Fetchers: test with fakes/mocked HTTP
@@ -223,14 +233,19 @@ TODO explain how the separation of concerns make testing way easier and therefor
 
 ## Checklist: adding a new source
 
-- Define mapping in a new adapter or configure `GenericStatusAdapter`
+- Ask AI to draft the adapter from a sample payload using the `NewsEvent` contract
+- Define mapping in a new adapter
 - Pick or implement a fetcher (JSON/RSS/custom)
 - Add an entry in `config/sources.yaml`
 - Restart the app; verify events are validated and stored via the repository
 - Add a small adapter test
 
+## Closing thoughts
+
+When you start as an architect and let AI fill in the seams, you trade days of spelunking for hours of focused building. The result isn’t just speed; it’s a pipeline that stays clean as it grows.
+TODO add warning that AI is also generating a lot of code that may not be needed and as the project grows also the generated code is getting bigger and bigger. In my experience, for the sake of correctness and quality, it is better to guardrail the generation to the minimum necessary that is still much more than what you would write by yourself.
+
 ## References
 
 - Code: [fxd24/newsfeed_platform](https://github.com/fxd24/newsfeed_platform)
 - Key files: `src/models/domain.py`, `src/sources/__init__.py`, `src/sources/fetchers.py`, `src/sources/adapters.py`, `src/sources/factory.py`, `src/repositories/news_event_repository.py`, `src/scheduler/scheduler_manager.py`, `config/sources.yaml`
-
