@@ -8,6 +8,18 @@ draft: false
 ---
 ```
 
+TODO I have found myself recently in the situation where I had to build quickly a data pipeline to ingest various types of news data, going from it news to status pages. I had no idea about how the data sources were structured. Usually I would start with one source, try to learn how to poll data from it, then add more sources and continue like that. I'd focus later on the code quality and architecture. 
+The process of learning the data soruces and how to poll data is very important and time consuming, but in the end it was not what the value was. 
+The goal was to build a pipeline that brings together many data sources, aggregates them and then filters and ranks them.
+So I've been thinking more and more about the software engineer taking the architect role and the AI writing the code.
+Why not architect first, then let AI fill in the code but still guardrailing it to generate just what you are looking for and not too much more?
+I've used also AI to assist me in taking the design decisions a reflect on various options. 
+Here is what I came up with.
+
+# TODO GOAL: this post is going to be useful for you if you are interested in understanding how simple design patterns can help you build an extensible, less duplicate code, easy to substitute data pipeline. 
+
+# TODO for the sake of this article I will the example of fetching various IT news sources as in the [Newsfeed Platform](https://github.com/fxd24/newsfeed_platform) project I have been working on, but the architectural decisions are generally applicable.
+
 ## Why small pipelines get messy fast
 
 Fetching multiple sources (JSON APIs, RSS, custom endpoints) often starts as glue scripts. Then reality hits:
@@ -15,6 +27,7 @@ Fetching multiple sources (JSON APIs, RSS, custom endpoints) often starts as glu
 - Data shapes differ wildly
 - Storage changes are painful
 - Scheduling/observability are afterthoughts
+TODO This leads to a lot of duplicate code and a lot of time at refactoring.
 
 This post shows a compact architecture that stays flexible as you add sources or swap storage:
 - A contract-first Pydantic model to standardize data
@@ -24,22 +37,16 @@ This post shows a compact architecture that stays flexible as you add sources or
 
 Code and structure are based on my project [Newsfeed Platform](https://github.com/fxd24/newsfeed_platform).
 
-## The contract: one Pydantic model
+## The Data Model: one Pydantic model
 
+# TODO we assume that the various source have a similar structure and will be mapped to the same model. This can be extended and adapted to your liking, but is out of scope for this article.
 Your pipeline needs a single language. Here that’s `NewsEvent` in `src/models/domain.py`. Everything coming in is shaped into this model; everything stored or served flows through it.
 
 ```python
 # src/models/domain.py (excerpt)
 from pydantic import BaseModel, ConfigDict, field_serializer
 from datetime import datetime
-from enum import Enum
-from typing import Optional, List, Dict
 
-class NewsType(str, Enum):
-    SERVICE_STATUS = "service_status"
-    SECURITY_ADVISORY = "security_advisory"
-    SOFTWARE_BUG = "software_bug"
-    UNKNOWN = "unknown"
 
 class NewsEvent(BaseModel):
     model_config = ConfigDict()
@@ -48,17 +55,13 @@ class NewsEvent(BaseModel):
     title: str
     body: str = ""
     published_at: datetime
-    status: Optional[str] = None
-    impact_level: Optional[str] = None
-    news_type: Optional[NewsType] = NewsType.UNKNOWN
-    url: Optional[str] = None
-    affected_components: Optional[List[str]] = None
+    ...
 
     @field_serializer("published_at")
     def serialize_published_at(self, value: datetime) -> str:
         return value.isoformat()
 ```
-
+TODO make this below a bit more conversational
 Why this helps:
 - Validation at the boundary avoids corrupt data
 - Named fields make tests and mapping explicit
@@ -66,6 +69,7 @@ Why this helps:
 
 ## Split responsibilities: fetchers vs adapters
 
+TODO make this much more conversational. explain what is going to be discussed and why. here it's just very dry and bullet points...
 - Fetchers handle transport (HTTP JSON, RSS, special APIs).
 - Adapters transform raw payloads into the `NewsEvent` model.
 - `UniversalNewsSource` orchestrates them per source.
@@ -84,63 +88,16 @@ class SourceAdapter(ABC):
     @abstractmethod
     def adapt(self, raw: Any) -> list["NewsEvent"]: ...
 ```
-
+# TODO more conversational. What is a fetcher and so on.
 Concrete implementations are small and focused:
 - Fetchers: `src/sources/fetchers.py` (`JSONAPIFetcher`, `RSSFetcher`, `HackerNewsFetcher`)
 - Adapters: `src/sources/adapters.py` (`GitHubStatusAdapter`, `RSSAdapter`, etc.)
 
-Minimal example of a fetcher + adapter pair:
 
-```python
-# Minimal fetcher (shape mirrors JSONAPIFetcher)
-import aiohttp
-class JSONAPIFetcher:
-    async def fetch(self, url: str, **kwargs) -> dict:
-        async with aiohttp.ClientSession() as s:
-            async with s.get(url, headers=kwargs.get("headers")) as r:
-                r.raise_for_status()
-                return await r.json()
 
-# Minimal adapter (shape mirrors RSSAdapter/GitHubStatusAdapter)
-from src.models.domain import NewsEvent, NewsType
-from datetime import datetime
-class SimpleStatusAdapter:
-    def adapt(self, raw: dict) -> list[NewsEvent]:
-        events: list[NewsEvent] = []
-        for item in raw.get("incidents", []):
-            events.append(
-                NewsEvent(
-                    id=item["id"],
-                    source="example_status",
-                    title=item["name"],
-                    body=item.get("body", ""),
-                    published_at=datetime.fromisoformat(item["created_at"].replace("Z", "+00:00")),
-                    news_type=NewsType.SERVICE_STATUS,
-                    url=item.get("url"),
-                )
-            )
-        return events
-```
-
-Now wire them up with `UniversalNewsSource`:
-
-```python
-# Orchestrate one source
-from src.sources import SourceConfig, UniversalNewsSource
-config = SourceConfig(
-    name="example_status",
-    source_type="json_api",
-    adapter_class="SimpleStatusAdapter",
-    url="https://status.example.com/api/v2/incidents.json",
-)
-
-source = UniversalNewsSource(config, JSONAPIFetcher(), SimpleStatusAdapter())
-events = await source.get_events()
-```
-
-In the project, this wiring is automated with registries in `src/sources/factory.py` so new sources are added via config.
 
 ## Repositories: start in-memory, swap later
+TODO explain what is a repository, what is the advantage. explain how it makes simple to go from in-memory to persistent storage.
 
 The repository interface in `src/repositories/news_event_repository.py` lets you switch storage without touching ingestion code.
 
@@ -178,6 +135,8 @@ class InMemoryNewsEventRepository(NewsEventRepository):
 
     def get_all_events(self) -> list[NewsEvent]:
         return self._events.copy()
+    
+    ...
 ```
 
 Swap in a persistent store later (e.g., the provided `ChromaDBNewsEventRepository`) with the same API. Your ingestion service doesn’t change.
@@ -223,6 +182,7 @@ sources:
 The factory in `src/sources/factory.py` reads this and instantiates the right fetcher/adapter for each source.
 
 ## Scheduling: cron vs APScheduler (quick guide)
+TODO make this more conversational. explain what is going to be discussed and why. here it's just very dry and bullet points...
 
 - Use cron when:
   - Scripts are truly stateless
@@ -234,24 +194,9 @@ The factory in `src/sources/factory.py` reads this and instantiates the right fe
   - You want controlled concurrency and misfire handling
   - You prefer app-integrated logs/metrics and easier testing
 
-This project uses `AsyncIOScheduler` with interval triggers in `src/scheduler/scheduler_manager.py`:
+TODO explain concretely why we chose APScheduler and not cron. use the example of the project to explain.
 
-```python
-# src/scheduler/scheduler_manager.py (excerpt)
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.interval import IntervalTrigger
 
-self.scheduler = AsyncIOScheduler(timezone="UTC")
-job = self.scheduler.add_job(
-    poll_source,  # async fn that fetches, adapts, and stores events for one source
-    trigger=IntervalTrigger(seconds=poll_interval),
-    id=f"poll_{source_name}",
-    replace_existing=True,
-)
-self.scheduler.start()
-```
-
-You can still run a single scheduler instance under a system supervisor (pm2/systemd/Docker) and keep cron for other jobs. Choose the simplest tool that gives you safety rails.
 
 ## Putting it together
 
@@ -269,6 +214,7 @@ flowchart LR
 ```
 
 ## Testing strategy (brief)
+TODO explain how the separation of concerns make testing way easier and therefore makes the pipeline much more reliable.
 
 - Adapters: pure transformation tests (input payload → `NewsEvent` list)
 - Fetchers: test with fakes/mocked HTTP
