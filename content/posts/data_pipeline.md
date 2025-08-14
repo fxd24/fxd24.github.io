@@ -51,7 +51,7 @@ Tools I used: thought partnership with Claude Desktop App and Gemini; code gener
 
 Your sources won’t agree on fields. Your system should. Define one canonical contract and make everything conform to it. In this project, that’s `NewsEvent`.
 
-Your pipeline needs a single language. Here that’s `NewsEvent` in `src/models/domain.py`. Everything coming in is shaped into this model; everything stored or served flows through it.
+Think of it as the one shape all data must take. Your pipeline needs a single language. Here that’s `NewsEvent` in `src/models/domain.py`. Everything coming in is shaped into this model; everything stored or served flows through it.
 
 ```python
 # src/models/domain.py (excerpt)
@@ -72,7 +72,7 @@ class NewsEvent(BaseModel):
     def serialize_published_at(self, value: datetime) -> str:
         return value.isoformat()
 ```
-TODO make this below a bit more conversational
+
 Why this helps:
 
 - Validation at the boundary avoids corrupt data
@@ -81,7 +81,8 @@ Why this helps:
 
 ## Split responsibilities: fetchers vs adapters
 
-TODO make this much more conversational. explain what is going to be discussed and why. here it's just very dry and bullet points...
+Here’s the mental model: fetchers bring data into the house; adapters make it house‑style. Keeping transport separate from transformation is what makes adding sources easy.
+
 - Fetchers handle transport (HTTP JSON, RSS, special APIs).
 - Adapters transform raw payloads into the `NewsEvent` model.
 - `UniversalNewsSource` orchestrates them per source.
@@ -100,14 +101,15 @@ class SourceAdapter(ABC):
     @abstractmethod
     def adapt(self, raw: Any) -> list["NewsEvent"]: ...
 ```
-# TODO more conversational. What is a fetcher and so on.
+
 Concrete implementations are small and focused:
+
 - Fetchers: `src/sources/fetchers.py` (`JSONAPIFetcher`, `RSSFetcher`, `HackerNewsFetcher`)
 - Adapters: `src/sources/adapters.py` (`GitHubStatusAdapter`, `RSSAdapter`, etc.)
 
 ## Repositories: start in-memory, swap later
 
-A repository abstracts storage behind a tiny interface. Start with in-memory for speed; swap to a persistent implementation without touching ingestion code. This keeps early iteration fast and later migrations boring. TODO a reader does not know what in-memory is, explain it.
+A repository abstracts storage behind a tiny interface. Start with in-memory for speed; swap to a persistent implementation without touching ingestion code. “In‑memory” simply means data lives in the app’s RAM and disappears on restart. This isperfect for local development and tests. This keeps early iteration fast and later migrations excitingly short.
 
 The repository interface in `src/repositories/news_event_repository.py` lets you switch storage without touching ingestion code.
 
@@ -193,19 +195,24 @@ sources:
 The factory in `src/sources/factory.py` reads this and instantiates the right fetcher/adapter for each source.
 
 ## Scheduling: cron vs APScheduler (quick guide)
-TODO make this more conversational. explain what is going to be discussed and why. here it's just very dry and bullet points...
+
+When should scheduling live outside the app, and when should it live inside? Put it where it's simplest to reason about.
 
 - Use cron when:
   - Scripts are truly stateless
   - You want OS-level scheduling and external observability
-  - You don’t need dynamic jobs or in-process coordination
+  - You don't need dynamic jobs or in-process coordination
 
 - Use APScheduler when:
   - You need dynamic, in-app scheduling
   - You want controlled concurrency and misfire handling
   - You prefer app-integrated logs/metrics and easier testing
+  - Different sources have different natural update frequencies
+  - Users want personalized polling intervals for specific sources
   
 For this project I chose APScheduler to keep polling logic, retries, and job coordination inside the app. It makes local testing trivial and avoids the operational dance of updating cron across environments.
+
+More importantly, APScheduler shines when sources have different rhythms: GitHub status updates every 5 minutes during incidents but hourly otherwise, while TechCrunch RSS might be fine at 15-minute intervals. Users might want breaking news sources polled aggressively but niche blogs checked daily. APScheduler lets you configure per-source intervals in `sources.yaml` and even adjust them dynamically based on user preferences or source behavior patterns—all without touching cron files or redeploying.
 
 ## Putting it together
 
@@ -243,7 +250,16 @@ Because responsibilities are cleanly split, tests are straightforward and reliab
 ## Closing thoughts
 
 When you start as an architect and let AI fill in the seams, you trade days of spelunking for hours of focused building. The result isn’t just speed; it’s a pipeline that stays clean as it grows.
-TODO add warning that AI is also generating a lot of code that may not be needed and as the project grows also the generated code is getting bigger and bigger. In my experience, for the sake of correctness and quality, it is better to guardrail the generation to the minimum necessary that is still much more than what you would write by yourself.
+
+One caution: AI loves to generate more code than you need. Guardrail the scope.
+
+- Keep prompts narrowly scoped to one seam (one adapter, one fetcher, one test)
+- Provide the contract and a minimal template; ask for the smallest working diff
+- Delete unused scaffolding; keep interfaces tiny so extensions stay simple
+
+Making projects complex is easy. Keeping them simple is the real magic. 
+
+I hope that this post gives you an insight into how to level up your data pipeline with design patterns and AI.
 
 ## References
 
